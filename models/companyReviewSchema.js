@@ -1,21 +1,32 @@
 const mongoose = require('mongoose');
-let companySchema = new mongoose.Schema({
-    subject: {
+
+let companyReviewSchema = new mongoose.Schema({
+    companyReviewSubject: {
         type: String,
         required: true
     },
-    review: {
+    userId: {
+        type: mongoose.Types.ObjectId,
+        ref: 'user',
+        required: true
+    },
+    companyId: {
+        type: mongoose.Types.ObjectId,
+        ref: 'company',
+        required: true
+    },
+    companyReview: {
         type: String,
         required: true
     },
-    reateing: {
+    companyReviewReateing: {
         type: String,
         required: true
     },
     isactive: {
         type: Boolean,
-        required: true,
         default: true,
     },
 })
-commentSchema = set('timestamp',true)
+companyReviewSchema.set('timestamps',true)
+module.exports = mongoose.model('review',companyReviewSchema)

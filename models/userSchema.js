@@ -27,7 +27,10 @@ let userSchema = new mongoose.Schema({
     },
     userRole:{
         type: String,
-        default: true,
+        default: "user",
+    },
+    profilePic: {
+        type: String
     },
     isActive: {
         type: Boolean,

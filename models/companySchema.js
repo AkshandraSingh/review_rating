@@ -1,29 +1,29 @@
 const mongoose = require('mongoose');
 let companySchema = new mongoose.Schema({
-    company_Name: {
+    companyName: {
         type: String,
         required: true
     },
-    location: {
+    companyLocation: {
         type: String,
         required: true
     },
-    FoundedOn: {
+    companyState: {
         type: String,
         required: true
     },
-    state: {
+    companyCity: {
         type: String,
         required: true
     },
-    city: {
+    profilePic: {
         type: String,
         required: true
     },
     isactive: {
         type: Boolean,
-        required: true,
         default: true,
     },
 })
-commentSchema = set('timestamp',true)
+companySchema.set('timestamps', true)
+module.exports = mongoose.model('company', companySchema)
