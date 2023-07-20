@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken')
 const nodemailer = require('nodemailer')
 const { transporter } = require('../service/emailService')
 const {unlinkSync} = require('fs');
+const otpGenerator = require('otp-generator')
 
 // This function is used to Create a User
 let createUser = async (req, res) => {
@@ -17,12 +18,12 @@ let createUser = async (req, res) => {
             req.file ? unlinkSync(req.file.path) : null;
             return res.status(401).send({
                 success: false,
-                message: 'User Allready Exists 👀',
+                message: 'User Allready Exists ',
             });
         }
         else {
             console.log(req.body)
-            const filePath = `/upload/${req.file}`;
+            const filePath = `/upload/${req.file.filename}`;
             userData.profilePic = filePath;
             userData.userPassword = await bcrypt.hash(req.body.userPassword, salt)
             const user = await userData.save()
@@ -61,14 +62,14 @@ let userLogin = async (req, res) => {
             else {
                 res.status(401).send({
                     success: false,
-                    message: 'Email or Password is Incorrect 😶'
+                    message: 'Email or Password is Incorrect '
                 })
             }
         }
         else {
             res.status(401).send({
                 success: false,
-                message: 'Email Not Exist 👀'
+                message: 'Email Not Exist '
             })
         }
     }
@@ -93,6 +94,7 @@ const sendUserDataPasswordEmail = async (req, res) => {
             userEmail: req.body.userEmail
         });
         if (userData != null) {
+            const OPT = otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false });
             const secret = userData._id + process.env.SECRET_KEY;
             const token = jwt.sign({ userID: userData._id }, secret, { expiresIn: "20m" })
             const link = `http://127.0.0.1:3000/user/reset-password/${userData._id}/${token}`
@@ -100,6 +102,7 @@ const sendUserDataPasswordEmail = async (req, res) => {
                 from: "nameste380@gmail.com",
                 to: userEmail,
                 subject: "Email for user reset Password",
+                text: `${otpGenerator.generate(15, { upperCaseAlphabets: false, specialChars: false })}`,
                 html: `<a href=${link}>click on this for reset password`
             });
             return res.status(201).json({

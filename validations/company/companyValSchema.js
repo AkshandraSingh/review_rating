@@ -2,7 +2,7 @@ const joi = require('joi')
 const { joiPasswordExtendCore } = require('joi-password');
 
 const companySchema = {
-
+    // It is Register Company Joi Object
     registerCompany: joi.object({
         companyName: joi
             .string()

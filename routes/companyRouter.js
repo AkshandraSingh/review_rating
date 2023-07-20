@@ -9,7 +9,7 @@ const router = express.Router();
 router.post('/createcompany', upload.single("profilePic"), company.createCompany)
 router.get('/listcompany', company.companyList)
 router.get('/detailscompany/:id', company.companyDetails)
-router.post('/sortcompany', company.sortCompany)
+router.get('/sortcompany', company.sortCompany)
 router.get('/searchcompany/:letter', company.searchCompany)
 
 module.exports = router

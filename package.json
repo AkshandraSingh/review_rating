@@ -5,11 +5,14 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon index",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "chai": "^4.3.7",
+    "chai-http": "^4.4.0",
+    "mocha": "^10.2.0",
     "nodemon": "^2.0.22"
   },
   "dependencies": {
@@ -23,6 +26,7 @@
     "multer": "^1.4.5-lts.1",
     "node-cron": "^3.0.2",
     "nodemailer": "^6.9.3",
+    "otp-generator": "^4.0.1",
     "winston": "^3.10.0",
     "winston-mongodb": "^5.1.1"
   }

@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
 
+// Nodemailer Transpoter is Require Email and Verification Pass
 const transporter = nodemailer.createTransport({
     service: "Gmail",
     auth: {

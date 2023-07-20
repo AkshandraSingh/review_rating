@@ -15,11 +15,15 @@ const logger = createLogger({
             filename: 'logs/log_info.log',
             level: "info",
             maxsize: 5242880,
-            format: format.combine(format.timestamp({format: 'MMM-DD-YYYY HH:mm:ss'}),format.json())
+            format: format.combine(
+                format.timestamp({format: 'MMM-DD-YYYY HH:mm:ss'}),
+                format.align(),
+                format.printf(info => `level ${info.level}: ${info.timestamp} ${info.message}`)
+            ),
         }),
         new transports.MongoDB({
-            db: process.env.URL,
             level: "info",
+            db: "mongodb://127.0.0.1:27017/reviewRating",
             options: {
                 useUnifedTopology: true,
             },
