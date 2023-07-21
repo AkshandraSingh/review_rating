@@ -110,3 +110,20 @@ describe("POST/ api/company", () => {
         done();
     });
 })
+
+// Comapny Details With Review 😁
+describe("POST/ api/company", () => {
+    it("IT Should Return Company Deatils With Review Detail : ", (done) => {  
+        chai
+            .request(server)
+            .get("/company/detailscompany/64b1485a501d52b6b130f39e")
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.should.be.a("object");
+                res.body.should.have.property("success").eq(true);
+                res.body.should.have.property("message").eq("Company details");
+                res.body.should.have.property("company")
+            });
+        done();
+    });
+})

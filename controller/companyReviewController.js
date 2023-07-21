@@ -1,5 +1,6 @@
 const companyReviewSchema = require('../models/companyReviewSchema')
 
+// Create Riview API 😀
 const createReview = async (req, res) => {
     let schema = new companyReviewSchema(req.body)
     try {
@@ -18,9 +19,9 @@ const createReview = async (req, res) => {
     }
 }
 
+// Update Review API 😉
 let updateReview = async (req, res) => {
     try {
-        console.log(req.body)
         const reviewData = await companyReviewSchema.findByIdAndUpdate(req.params.id, req.body);
         if (reviewData) {
             res.status(202).send({
@@ -42,6 +43,7 @@ let updateReview = async (req, res) => {
     }
 }
 
+// Delete Review API 👍 
 let deleteReview = async (req, res) => {
     try {
         let id = req.params.id

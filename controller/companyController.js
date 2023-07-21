@@ -4,6 +4,7 @@ const { unlinkSync } = require('fs');
 const companyReviewSchema = require('../models/companyReviewSchema');
 
 module.exports = {
+    // Create Company API ✌
     createCompany: async (req, res) => {
         const companyData = new companySchema(req.body)
         try {
@@ -39,6 +40,7 @@ module.exports = {
         }
     },
 
+    // Company List API 😀
     companyList: async (req, res) => {
         try {
             const companyOfList = await companySchema.find()
@@ -59,6 +61,7 @@ module.exports = {
         }
     },
 
+    // Company Details API ✌
     companyDetails: async (req, res) => {
         const id = req.params.id
         try {
@@ -81,6 +84,7 @@ module.exports = {
         }
     },
 
+    // Sort Company API 😁
     sortCompany: async (req, res) => {
         try {
             let sortedCompany = await companySchema.find().sort({ companyName: 1 })
@@ -99,6 +103,7 @@ module.exports = {
         }
     },
 
+    // Search Company API 🤩
     searchCompany: async (req, res) => {
         const { letter } = req.params
         try {
