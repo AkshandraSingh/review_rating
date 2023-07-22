@@ -23,7 +23,7 @@ const logger = createLogger({
         }),
         new transports.MongoDB({
             level: "info",
-            db: "mongodb://127.0.0.1:27017/reviewRating",
+            db: process.env.URL,
             options: {
                 useUnifedTopology: true,
             },

@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken')
 const nodemailer = require('nodemailer')
 const { transporter } = require('../service/emailService')
 const {unlinkSync} = require('fs');
-const otpGenerator = require('otp-generator')
 
 // This function is used to Create a User
 let createUser = async (req, res) => {
@@ -41,7 +40,6 @@ let createUser = async (req, res) => {
         })
     }
 }
-
 
 // This function is used to Login a User
 let userLogin = async (req, res) => {
@@ -94,7 +92,6 @@ const sendUserDataPasswordEmail = async (req, res) => {
             userEmail: req.body.userEmail
         });
         if (userData != null) {
-            const OPT = otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false });
             const secret = userData._id + process.env.SECRET_KEY;
             const token = jwt.sign({ userID: userData._id }, secret, { expiresIn: "20m" })
             const link = `http://127.0.0.1:3000/user/reset-password/${userData._id}/${token}`
@@ -102,7 +99,6 @@ const sendUserDataPasswordEmail = async (req, res) => {
                 from: "nameste380@gmail.com",
                 to: userEmail,
                 subject: "Email for user reset Password",
-                text: `${otpGenerator.generate(15, { upperCaseAlphabets: false, specialChars: false })}`,
                 html: `<a href=${link}>click on this for reset password`
             });
             return res.status(201).json({
