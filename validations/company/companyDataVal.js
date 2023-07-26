@@ -1,7 +1,7 @@
 const userValidation = require('../../validations/company/companyValSchema')
 
 module.exports = {
-    registerCompany: async (req, res, next) => {
+    registerCompanyVal: async (req, res, next) => {
         // It Verify the validation is user enter correct Values.
         const value = await userValidation.registerCompany.validate(req.body, { abortEarly: false })
         const value2 = await userValidation.registerCompany.validate(req.body, { abortEarly: false })

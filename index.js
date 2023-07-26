@@ -16,5 +16,4 @@ const server = app.listen(PORT, () => {
     console.log(`PORT: ${process.env.PORT}`)
     logger.info(`Server Started and Running on http://${HOST}:${PORT}`)
 })
-
 module.exports = server

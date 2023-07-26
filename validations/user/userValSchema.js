@@ -2,7 +2,7 @@ const joi = require('joi')
 const { joiPasswordExtendCore } = require('joi-password');
 const joiPassword = joi.extend(joiPasswordExtendCore);
 
-const userSchema = {
+const userSchema = { // ! Validation Schema 
     registerUser: joi.object({
         userName: joi
             .string()
@@ -85,7 +85,6 @@ const userSchema = {
                 'password.noWhiteSpaces': '{#label} should not contain white spaces',
                 'password.onlyLatinCharacters': '{#label} should contain only latin characters',
             }),
-
         confirmPassword: joiPassword
             .string()
             .minOfSpecialCharacters(1)

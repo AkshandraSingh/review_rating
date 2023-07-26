@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 const companySchema = require('../models/companySchema')
 const { unlinkSync } = require('fs');
 const companyReviewSchema = require('../models/companyReviewSchema');

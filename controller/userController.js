@@ -1,32 +1,33 @@
-let userSchema = require('../models/userSchema')
-let bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
-const nodemailer = require('nodemailer')
-const { transporter } = require('../service/emailService')
-const {unlinkSync} = require('fs');
+let userSchema = require('../models/userSchema') 
+let bcrypt = require('bcrypt') // ? For Incrypt the Password 
+const jwt = require('jsonwebtoken') // ? JWT is use to Genrate a Token
+const { transporter } = require('../service/emailService') // ? Its is a Transpoter for Sending Email
+const { unlinkSync } = require('fs'); // ? FS Stands For File System
 
-// This function is used to Create a User
+// ? This function is used to Create a User ✌
 let createUser = async (req, res) => {
     const userData = new userSchema(req.body)
-    const salt = await bcrypt.genSalt(10)
+    const salt = await bcrypt.genSalt(10) // ! It is Algorithm For Genrating Incrypt the Password (How many Character) .
     try {
-        const userExits = await userSchema.findOne({
+        const userExits = await userSchema.findOne({ // ? It Chek User Exist Or Not (With User Email)
             userEmail: req.body.userEmail,
         });
         if (userExits) {
-            req.file ? unlinkSync(req.file.path) : null;
+            req.file ? unlinkSync(req.file.path) : null; // ! Deleating Unnecessary Profile Pic That Allready Store in Folder .
             return res.status(401).send({
                 success: false,
-                message: 'User Allready Exists ',
+                message: 'User Allready Exists With This Email ',
             });
         }
         else {
-            console.log(req.body)
+            userData.userName = req.body.userName.trim().split(" ").map((data) => {
+                return data.charAt(0).toUpperCase() + data.slice(1);
+            }).join(" ") // ! Slice: Slice jo usse array melta ha me hum 2 parameter de skate ha ki Kha se Kha tak Elements Print Krane Hai 😁
             const filePath = `/upload/${req.file.filename}`;
             userData.profilePic = filePath;
-            userData.userPassword = await bcrypt.hash(req.body.userPassword, salt)
+            userData.userPassword = await bcrypt.hash(req.body.userPassword, salt) // ? To Convert Password into Incrupt From .
             const user = await userData.save()
-            res.status(200).json({
+            res.status(201).json({
                 success: true,
                 message: 'User has been Created ✔',
                 user: user,
@@ -41,16 +42,16 @@ let createUser = async (req, res) => {
     }
 }
 
-// This function is used to Login a User
+// ? This function is used to Login a User 😁
 let userLogin = async (req, res) => {
     try {
         const userData = await userSchema.findOne({ userEmail: req.body.userEmail })
         if (userData) {
-            const hashpassword = await bcrypt.compare(req.body.userPassword, userData.userPassword)
+            const hashpassword = await bcrypt.compare(req.body.userPassword, userData.userPassword) // ? It Compare The New Password and Password that Sore in DataBase! .
             if (userData && hashpassword) {
                 const token = jwt.sign({ userData }, process.env.SECRET_KEY, {
                     expiresIn: "15m",
-                })
+                }) // ! It Generate a Token That Expire in 15 Minutes .
                 res.status(200).send({
                     success: true,
                     message: 'Login Successful ✔',
@@ -64,8 +65,8 @@ let userLogin = async (req, res) => {
                 })
             }
         }
-        else {
-            res.status(401).send({
+        else { // ? It Give This Message When Email is Not Present in DataBase .
+            res.status(403).send({
                 success: false,
                 message: 'Email Not Exist '
             })
@@ -79,22 +80,17 @@ let userLogin = async (req, res) => {
     }
 }
 
-// This function is used to Check Token a User
-let checkToken = (req, res) => {
-    res.send("Your Token is Correct ✔ ")
-}
-
-// This function is used to send email
+// ? This function is used to send email ✌
 const sendUserDataPasswordEmail = async (req, res) => {
     const { userEmail } = req.body
     try {
-        const userData = await userSchema.findOne({
+        const userData = await userSchema.findOne({ // ! It Check The Email is Present in DataBase or Not .
             userEmail: req.body.userEmail
         });
         if (userData != null) {
             const secret = userData._id + process.env.SECRET_KEY;
             const token = jwt.sign({ userID: userData._id }, secret, { expiresIn: "20m" })
-            const link = `http://127.0.0.1:3000/user/reset-password/${userData._id}/${token}`
+            const link = `http://127.0.0.1:3000/user/reset-password/${userData._id}/${token}` // ! This Link is Geven By Frontend Dev
             let info = await transporter.sendMail({
                 from: "nameste380@gmail.com",
                 to: userEmail,
@@ -121,50 +117,47 @@ const sendUserDataPasswordEmail = async (req, res) => {
     }
 };
 
-let userResetPassword = async (req, res) => {
-    const { id, token } = req.params;
+// ? Reset Password API 😀
+const userResetPassword = async (req, res) => {
+    const { id, token } = req.params; // ! It Takes Data From Params (Means URL) .
     const { newPassword, confirmPassword } = req.body;
     try {
         const checkUser = await userSchema.findById(id);
         if (checkUser != null) {
-            const secretKey = checkUser._id + process.env.JWT_SECRET_KEY
-            // jwt.verify(token, secretKey)
-            if (newPassword == confirmPassword) {
+            const secretKey = checkUser._id + process.env.SECRET_KEY;
+            if (newPassword === confirmPassword) {
                 const salt = await bcrypt.genSalt(10);
                 const bcryptPassword = await bcrypt.hash(confirmPassword, salt);
                 await userSchema.findByIdAndUpdate(checkUser._id, {
-                    $set: { userPassword: bcryptPassword },
+                    $set: { userPassword: bcryptPassword }, // ? It is a MongoDB Query To Update the Password .
                 });
-                res.status(200).json({
+                res.status(201).json({
                     success: true,
-                    message: "Password Updated Successfully ✔"
-                })
+                    message: "Password Updated Successfully",
+                });
             } else {
                 res.status(403).json({
                     success: false,
-                    message: "New Password Does not Match With Confirmation 🤦‍♂️"
-                })
+                    message: "Password and ConfirmPassword does not match",
+                });
             }
-        } else {
+        } else { // ? It Give This Message When Email is Not Present in DataBase .
             res.status(403).json({
                 success: false,
-                error: "Email user is not Found 🙂"
-            })
+                message: `Please Enter Valid Email`,
+            });
         }
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: `Error occur : ${error.message}`,
+        });
     }
-    catch (error) {
-        res.status(403).json({
-            screen: false,
-            error: error.message,
-        })
-    }
-}
-
-// All functions in this module
+};
+// * All functions in this module
 module.exports = {
     createUser,
     userLogin,
-    checkToken,
     sendUserDataPasswordEmail,
     userResetPassword
 };

@@ -782,3 +782,128 @@ level info: Jul-22-2023 15:12:57 	Server Started and Running on http://localhost
 level info: Jul-22-2023 15:12:59 	MongoDB is Connected
 level info: Jul-22-2023 19:37:05 	Server Started and Running on http://localhost:9000
 level info: Jul-22-2023 19:37:08 	MongoDB is Connected
+level info: Jul-24-2023 14:51:06 	Server Started and Running on http://localhost:9000
+level info: Jul-24-2023 14:59:10 	Server Started and Running on http://localhost:9000
+level info: Jul-24-2023 15:05:36 	Server Started and Running on http://localhost:9000
+level info: Jul-24-2023 15:05:39 	MongoDB is Connected
+level info: Jul-24-2023 15:07:05 	Server Started and Running on http://localhost:9000
+level info: Jul-24-2023 15:07:08 	MongoDB is Connected
+level info: Jul-24-2023 15:07:36 	Server Started and Running on http://localhost:9000
+level info: Jul-24-2023 15:07:39 	MongoDB is Connected
+level info: Jul-24-2023 15:08:27 	Server Started and Running on http://localhost:9000
+level info: Jul-24-2023 15:08:29 	MongoDB is Connected
+level info: Jul-24-2023 15:08:49 	Server Started and Running on http://localhost:9000
+level info: Jul-24-2023 15:08:52 	MongoDB is Connected
+level info: Jul-24-2023 15:21:38 	Server Started and Running on http://localhost:9000
+level info: Jul-24-2023 15:21:41 	MongoDB is Connected
+level info: Jul-24-2023 15:32:12 	Server Started and Running on http://localhost:9000
+level info: Jul-24-2023 15:32:14 	MongoDB is Connected
+level info: Jul-24-2023 15:32:23 	Server Started and Running on http://localhost:9000
+level info: Jul-24-2023 15:32:26 	MongoDB is Connected
+level info: Jul-24-2023 15:32:29 	Server Started and Running on http://localhost:9000
+level info: Jul-24-2023 15:32:32 	MongoDB is Connected
+level info: Jul-24-2023 15:38:30 	Server Started and Running on http://localhost:9000
+level info: Jul-24-2023 15:38:33 	MongoDB is Connected
+level info: Jul-24-2023 20:27:21 	Server Started and Running on http://localhost:9000
+level error: Jul-24-2023 20:27:51 	Mongoose Connection Error!! 
+level info: Jul-24-2023 20:30:43 	Server Started and Running on http://localhost:9000
+level error: Jul-24-2023 20:31:13 	Mongoose Connection Error!! 
+level info: Jul-24-2023 20:31:29 	Server Started and Running on http://localhost:9000
+level info: Jul-24-2023 20:31:36 	Server Started and Running on http://localhost:9000
+level error: Jul-24-2023 20:32:06 	Mongoose Connection Error!! 
+level info: Jul-24-2023 20:37:31 	Server Started and Running on http://localhost:9000
+level error: Jul-24-2023 20:38:01 	Mongoose Connection Error!! 
+level info: Jul-24-2023 20:40:54 	Server Started and Running on http://localhost:9000
+level error: Jul-24-2023 20:41:24 	Mongoose Connection Error!! 
+level info: Jul-24-2023 20:41:47 	Server Started and Running on http://localhost:9000
+level info: Jul-24-2023 20:41:50 	MongoDB is Connected
+level info: Jul-24-2023 20:42:20 	Server Started and Running on http://localhost:9000
+level info: Jul-24-2023 20:42:23 	MongoDB is Connected
+level info: Jul-24-2023 20:54:04 	Server Started and Running on http://localhost:9000
+level info: Jul-24-2023 20:54:07 	MongoDB is Connected
+level info: Jul-24-2023 21:00:15 	Server Started and Running on http://localhost:9000
+level info: Jul-24-2023 21:00:17 	MongoDB is Connected
+level info: Jul-24-2023 21:01:51 	Server Started and Running on http://localhost:9000
+level info: Jul-24-2023 21:01:54 	MongoDB is Connected
+level info: Jul-24-2023 21:04:05 	Server Started and Running on http://localhost:9000
+level info: Jul-24-2023 21:04:08 	MongoDB is Connected
+level info: Jul-24-2023 21:07:08 	Server Started and Running on http://localhost:9000
+level info: Jul-24-2023 21:07:10 	MongoDB is Connected
+level info: Jul-24-2023 21:07:40 	Server Started and Running on http://localhost:9000
+level info: Jul-24-2023 21:07:42 	MongoDB is Connected
+level info: Jul-24-2023 21:08:23 	Server Started and Running on http://localhost:9000
+level info: Jul-24-2023 21:08:25 	MongoDB is Connected
+level info: Jul-24-2023 21:13:03 	Server Started and Running on http://localhost:9000
+level info: Jul-24-2023 21:13:06 	MongoDB is Connected
+level info: Jul-25-2023 09:07:18 	Server Started and Running on http://localhost:9000
+level error: Jul-25-2023 09:07:49 	Mongoose Connection Error!! 
+level info: Jul-25-2023 09:08:10 	Server Started and Running on http://localhost:9000
+level info: Jul-25-2023 09:08:12 	MongoDB is Connected
+level info: Jul-25-2023 09:20:03 	Server Started and Running on http://localhost:9000
+level info: Jul-25-2023 09:20:06 	MongoDB is Connected
+level info: Jul-25-2023 09:20:11 	Server Started and Running on http://localhost:9000
+level info: Jul-25-2023 09:20:14 	MongoDB is Connected
+level info: Jul-25-2023 09:34:13 	Server Started and Running on http://localhost:9000
+level info: Jul-25-2023 09:34:16 	MongoDB is Connected
+level info: Jul-25-2023 09:34:37 	Server Started and Running on http://localhost:9000
+level info: Jul-25-2023 09:34:39 	MongoDB is Connected
+level info: Jul-25-2023 09:41:03 	Server Started and Running on http://localhost:9000
+level info: Jul-25-2023 09:41:05 	MongoDB is Connected
+level info: Jul-25-2023 09:42:21 	Server Started and Running on http://localhost:9000
+level info: Jul-25-2023 09:42:24 	MongoDB is Connected
+level info: Jul-25-2023 09:45:17 	Server Started and Running on http://localhost:9000
+level info: Jul-25-2023 09:45:19 	MongoDB is Connected
+level info: Jul-25-2023 14:59:26 	Server Started and Running on http://localhost:9000
+level info: Jul-25-2023 14:59:29 	MongoDB is Connected
+level info: Jul-25-2023 15:45:40 	MongoDB is Connected
+level info: Jul-25-2023 15:57:52 	Server Started and Running on http://localhost:9000
+level info: Jul-25-2023 15:57:55 	MongoDB is Connected
+level info: Jul-25-2023 16:15:39 	Server Started and Running on http://localhost:9000
+level info: Jul-25-2023 16:15:42 	MongoDB is Connected
+level info: Jul-25-2023 16:24:53 	Server Started and Running on http://localhost:9000
+level info: Jul-25-2023 16:24:56 	MongoDB is Connected
+level info: Jul-25-2023 16:31:01 	Server Started and Running on http://localhost:9000
+level info: Jul-25-2023 16:31:04 	MongoDB is Connected
+level info: Jul-25-2023 17:08:20 	Server Started and Running on http://localhost:9000
+level info: Jul-25-2023 17:08:23 	MongoDB is Connected
+level info: Jul-25-2023 17:12:30 	Server Started and Running on http://localhost:9000
+level info: Jul-25-2023 17:12:33 	MongoDB is Connected
+level info: Jul-25-2023 18:35:39 	Server Started and Running on http://localhost:9000
+level info: Jul-25-2023 18:35:42 	MongoDB is Connected
+level info: Jul-25-2023 18:44:41 	Server Started and Running on http://localhost:9000
+level info: Jul-25-2023 18:44:44 	MongoDB is Connected
+level info: Jul-25-2023 18:49:18 	Server Started and Running on http://localhost:9000
+level info: Jul-25-2023 18:49:21 	MongoDB is Connected
+level info: Jul-25-2023 18:50:58 	Server Started and Running on http://localhost:9000
+level info: Jul-25-2023 18:51:00 	MongoDB is Connected
+level info: Jul-25-2023 18:51:51 	Server Started and Running on http://localhost:9000
+level info: Jul-25-2023 20:55:09 	Server Started and Running on http://localhost:9000
+level error: Jul-25-2023 20:55:39 	Mongoose Connection Error!! 
+level info: Jul-25-2023 20:56:04 	Server Started and Running on http://localhost:9000
+level info: Jul-25-2023 20:56:07 	MongoDB is Connected
+level info: Jul-25-2023 21:02:26 	Server Started and Running on http://localhost:9000
+level info: Jul-25-2023 21:02:28 	MongoDB is Connected
+level info: Jul-25-2023 21:03:03 	Server Started and Running on http://localhost:9000
+level info: Jul-25-2023 21:03:05 	MongoDB is Connected
+level info: Jul-25-2023 21:04:51 	Server Started and Running on http://localhost:9000
+level info: Jul-25-2023 21:04:54 	MongoDB is Connected
+level info: Jul-25-2023 21:06:36 	Server Started and Running on http://localhost:9000
+level info: Jul-25-2023 21:06:39 	MongoDB is Connected
+level info: Jul-26-2023 15:37:51 	Server Started and Running on http://localhost:9000
+level info: Jul-26-2023 15:37:54 	MongoDB is Connected
+level info: Jul-26-2023 15:39:18 	Server Started and Running on http://localhost:9000
+level info: Jul-26-2023 15:39:21 	MongoDB is Connected
+level info: Jul-26-2023 16:02:52 	Server Started and Running on http://localhost:9000
+level info: Jul-26-2023 16:02:55 	MongoDB is Connected
+level info: Jul-26-2023 16:03:02 	Server Started and Running on http://localhost:9000
+level info: Jul-26-2023 16:03:04 	MongoDB is Connected
+level info: Jul-26-2023 17:07:53 	Server Started and Running on http://localhost:9000
+level info: Jul-26-2023 17:07:56 	MongoDB is Connected
+level info: Jul-26-2023 17:43:39 	Server Started and Running on http://localhost:9000
+level info: Jul-26-2023 17:43:41 	MongoDB is Connected
+level info: Jul-26-2023 17:44:07 	Server Started and Running on http://localhost:9000
+level info: Jul-26-2023 17:44:10 	MongoDB is Connected
+level info: Jul-26-2023 17:48:22 	Server Started and Running on http://localhost:9000
+level info: Jul-26-2023 17:48:25 	MongoDB is Connected
+level info: Jul-26-2023 17:49:36 	Server Started and Running on http://localhost:9000
+level info: Jul-26-2023 17:49:38 	MongoDB is Connected

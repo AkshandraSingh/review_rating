@@ -24,15 +24,16 @@ const userAuthetication = async (req,res,next) =>{
     }
 }
 
-const userAuthorization = async (req,res,next)=>{
-    if (req.role == 'user') {
-        next()
-    } else {
-        res.status(401)
-    }
-}
+// const userAuthorization = async (req,res,next)=>{
+//     if (req.role == 'user') {
+//         next()
+//     } else {
+//         res.status(401)
+//     }
+// }
+
 
 module.exports = {
     userAuthetication,
-    userAuthorization
+    // userAuthorization
 }
