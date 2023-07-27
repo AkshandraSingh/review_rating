@@ -1,27 +1,27 @@
-const companySchema = require('../models/companySchema')
-const { unlinkSync } = require('fs');
-const companyReviewSchema = require('../models/companyReviewSchema');
+const companySchema = require('../models/companySchema') // ? Company Schema 
+const { unlinkSync } = require('fs'); // ? For Deleteing Company Profile Pic
+const companyReviewSchema = require('../models/companyReviewSchema');  // ? Company Review Schema
 
 module.exports = {
     // Create Company API ✌
     createCompany: async (req, res) => {
         const companyData = new companySchema(req.body)
         try {
-            const companyExist = await companySchema.findOne({
+            const companyExist = await companySchema.findOne({ // ! Check the Compnay Name is allready Register or Not
                 companyName: req.body.companyName,
             });
             companyData.companyName = req.body.companyName.trim().split(" ").map((data) => {
                 return data.charAt(0).toUpperCase() + data.slice(1);
-            }).join(" ")
+            }).join(" ") // ! Converting First letter in Capital and Trim
             if (companyExist) {
-                req.file ? unlinkSync(req.file.path) : null;
+                req.file ? unlinkSync(req.file.path) : null; // ! Deleating Unnecessary Profile Pic That Allready Store in Folder .
                 res.status(401).send({
                     success: false,
                     message: 'Company allready exists',
                 });
             }
             else {
-                const filePath = `/uploads/${req.file.filename}`;
+                const filePath = `/uploads/${req.file.filename}`; // ! Path of Profile Pic
                 companyData.profilePic = filePath;
                 const company = await companyData.save()
                 res.status(200).json({
@@ -43,7 +43,7 @@ module.exports = {
     companyList: async (req, res) => {
         try {
             const companyOfList = await companySchema.find()
-            const count = await companySchema.find().count();
+            const count = await companySchema.find().count(); // ? Counting the Company
             res.status(200).json({
                 success: true,
                 message: 'List Of Company',
@@ -64,7 +64,7 @@ module.exports = {
     companyDetails: async (req, res) => {
         const id = req.params.id
         try {
-            const companyData = await companySchema.findById(id)
+            const companyData = await companySchema.findById(id) // ? Finding the Company
             const reviewData = await companyReviewSchema
                 .find({ companyId: id })
                 .populate({ path: "userId", select: "userName profilePic" })

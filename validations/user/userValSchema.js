@@ -2,7 +2,7 @@ const joi = require('joi')
 const { joiPasswordExtendCore } = require('joi-password');
 const joiPassword = joi.extend(joiPasswordExtendCore);
 
-const userSchema = { // ! Validation Schema 
+const userSchema = { // ! Validation Schema base on User Schema
     registerUser: joi.object({
         userName: joi
             .string()
