@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken') // ? For Creating JWT Token .
 
 const userAuthetication = async (req,res,next) =>{
     const authHeader = req.headers.Authorization || req.headers.authorization;

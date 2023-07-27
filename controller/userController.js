@@ -9,7 +9,7 @@ let createUser = async (req, res) => {
     const userData = new userSchema(req.body)
     const salt = await bcrypt.genSalt(10) // ! It is Algorithm For Genrating Incrypt the Password (How many Character) .
     try {
-        const userExits = await userSchema.findOne({ // ? It Chek User Exist Or Not (With User Email)
+        const userExits = await userSchema.findOne({ // ? It Chek User Exist Or Not (With User Email) .
             userEmail: req.body.userEmail,
         });
         if (userExits) {
@@ -23,7 +23,7 @@ let createUser = async (req, res) => {
             const filePath = `/upload/${req.file.filename}`;
             userData.profilePic = filePath;
             userData.userPassword = await bcrypt.hash(req.body.userPassword, salt) // ? To Convert Password into Incrupt From .
-            const user = await userData.save()
+            const user = await userData.save() // ? Saveing Data in DataBase .
             res.status(201).json({
                 success: true,
                 message: 'User has been Created ✔',
@@ -86,9 +86,9 @@ const sendUserDataPasswordEmail = async (req, res) => {
         });
         if (userData != null) {
             const secret = userData._id + process.env.SECRET_KEY;
-            const token = jwt.sign({ userID: userData._id }, secret, { expiresIn: "20m" })
-            const link = `http://127.0.0.1:3000/user/reset-password/${userData._id}/${token}` // ! This Link is Geven By Frontend Dev
-            let info = await transporter.sendMail({
+            const token = jwt.sign({ userID: userData._id }, secret, { expiresIn: "20m" }) // ! It Create a Token for Reset password .
+            const link = `http://127.0.0.1:3000/user/reset-password/${userData._id}/${token}` // ! This Link is Given By Frontend Dev .
+            let info = await transporter.sendMail({ // ? It Send Email on User Email .
                 from: "nameste380@gmail.com",
                 to: userEmail,
                 subject: "Email for user reset Password",
@@ -97,13 +97,13 @@ const sendUserDataPasswordEmail = async (req, res) => {
             return res.status(201).json({
                 success: true,
                 message: "Email Sent Successfully ❤",
-                token: token,
-                userID: userData._id
+                token: token, // ! it Show Token in body .
+                userID: userData._id // ! it also Show User ID in Body.
             })
         } else {
             res.status(403).json({
                 success: false,
-                message: "Please Enter Valid Email 👀"
+                message: "Please Enter Valid Email 👀" // ! if Emial is Not Present in DataBase .
             })
         }
     } catch (error) {
@@ -119,12 +119,12 @@ const userResetPassword = async (req, res) => {
     const { id, token } = req.params; // ! It Takes Data From Params (Means URL) .
     const { newPassword, confirmPassword } = req.body;
     try {
-        const checkUser = await userSchema.findById(id);
+        const checkUser = await userSchema.findById(id); // ! Find Data by Id .
         if (checkUser != null) {
             const secretKey = checkUser._id + process.env.SECRET_KEY;
-            if (newPassword === confirmPassword) {
+            if (newPassword === confirmPassword) { // ! It compare is new password and Comfirm password match or not .
                 const salt = await bcrypt.genSalt(10);
-                const bcryptPassword = await bcrypt.hash(confirmPassword, salt);
+                const bcryptPassword = await bcrypt.hash(confirmPassword, salt); // ! It again! Incrypt Password .
                 await userSchema.findByIdAndUpdate(checkUser._id, {
                     $set: { userPassword: bcryptPassword }, // ? It is a MongoDB Query To Update the Password .
                 });
@@ -135,7 +135,7 @@ const userResetPassword = async (req, res) => {
             } else {
                 res.status(403).json({
                     success: false,
-                    message: "Password and ConfirmPassword does not match",
+                    message: "Password and ConfirmPassword Does Not Match",
                 });
             }
         } else { // ? It Give This Message When Email is Not Present in DataBase .
