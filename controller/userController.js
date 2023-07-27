@@ -1,4 +1,4 @@
-let userSchema = require('../models/userSchema') 
+let userSchema = require('../models/userSchema')
 let bcrypt = require('bcrypt') // ? For Incrypt the Password 
 const jwt = require('jsonwebtoken') // ? JWT is use to Genrate a Token
 const { transporter } = require('../service/emailService') // ? Its is a Transpoter for Sending Email
@@ -20,9 +20,6 @@ let createUser = async (req, res) => {
             });
         }
         else {
-            userData.userName = req.body.userName.trim().split(" ").map((data) => {
-                return data.charAt(0).toUpperCase() + data.slice(1);
-            }).join(" ") // ! Slice: Slice jo usse array melta ha me hum 2 parameter de skate ha ki Kha se Kha tak Elements Print Krane Hai 😁
             const filePath = `/upload/${req.file.filename}`;
             userData.profilePic = filePath;
             userData.userPassword = await bcrypt.hash(req.body.userPassword, salt) // ? To Convert Password into Incrupt From .
