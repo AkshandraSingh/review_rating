@@ -1,8 +1,7 @@
-const joi = require('joi')
-const { joiPasswordExtendCore } = require('joi-password');
+const joi = require('joi') // ? For Validation of Company
 
 const companySchema = {
-    // It is Register Company Joi Object
+    // ! Register Company Vailidation .
     registerCompany: joi.object({
         companyName: joi
             .string()

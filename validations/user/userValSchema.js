@@ -1,8 +1,9 @@
-const joi = require('joi')
-const { joiPasswordExtendCore } = require('joi-password');
+const joi = require('joi') // ! For Validation
+const { joiPasswordExtendCore } = require('joi-password'); // ! For Validation Password
 const joiPassword = joi.extend(joiPasswordExtendCore);
 
-const userSchema = { // ! Validation Schema base on User Schema
+const userSchema = { // ! Validation Schema base on User Schema .
+    // ! Register Validation .
     registerUser: joi.object({
         userName: joi
             .string()
@@ -58,6 +59,7 @@ const userSchema = { // ! Validation Schema base on User Schema
             .required()
     }).unknown(true),
 
+    // ! Login Validation .
     loginUser: joi.object({
         userEmail: joi
             .string()
@@ -67,6 +69,7 @@ const userSchema = { // ! Validation Schema base on User Schema
             .string()
     }).unknown(true),
 
+    // ! Reset Password .
     passwordConfirm: joi.object({
         newPassword: joiPassword
             .string()
@@ -103,52 +106,6 @@ const userSchema = { // ! Validation Schema base on User Schema
                 'password.onlyLatinCharacters': '{#label} should contain only latin characters',
             })
     }),
-    registerCompany: joi.object({
-        companyName: joi
-            .string()
-            .min(2)
-            .max(25)
-            .message({
-                "string-min": "{#lable} should be at least {#limit} characters",
-                "string-man": "{#lable} should be at least {#limit} characters",
-            })
-            .required(),
-        companyLocation: joi
-            .string()
-            .min(2)
-            .max(25)
-            .message({
-                "string-min": "{#lable} should be at least {#limit} characters",
-                "string-man": "{#lable} should be at least {#limit} characters",
-            })
-            .required(),
-        companyEmail: joi
-            .string()
-            .email()
-            .min(11)
-            .message({
-                "string-min": "{#lable} should be at least {#limit} characters",
-                "string-man": "{#lable} should be at least {#limit} characters",
-            })
-            .required(),
-        companyCity: joi
-            .string()
-            .min(2)
-            .max(25)
-            .message({
-                "string-min": "{#lable} should be at least {#limit} characters",
-                "string-man": "{#lable} should be at least {#limit} characters",
-            }),
-        companyState: joi
-            .string()
-            .min(2)
-            .max(25)
-            .message({
-                "string-min": "{#lable} should be at least {#limit} characters",
-                "string-man": "{#lable} should be at least {#limit} characters",
-            }),
-    })
-
 }
 
 module.exports = userSchema

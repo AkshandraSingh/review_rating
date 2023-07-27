@@ -1,6 +1,7 @@
-const joi = require('joi')
+const joi = require('joi') // ? For Validation
 
 const companyReviewValidationSchema = {
+    // ! Validation For Creating Company
     registerCompany: joi.object({
         companyReviewSubject: joi
             .string()
