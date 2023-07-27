@@ -1,8 +1,8 @@
-let userSchema = require('../models/userSchema')
-let bcrypt = require('bcrypt') // ? For Incrypt the Password 
-const jwt = require('jsonwebtoken') // ? JWT is use to Genrate a Token
-const { transporter } = require('../service/emailService') // ? Its is a Transpoter for Sending Email
-const { unlinkSync } = require('fs'); // ? FS Stands For File System
+let userSchema = require('../models/userSchema') // ? User Schema (For some API) .
+let bcrypt = require('bcrypt') // ? For Incrypt the Password .
+const jwt = require('jsonwebtoken') // ? JWT is use to Genrate a Token .
+const { transporter } = require('../service/emailService') // ? Its is a Transpoter for Sending Email .
+const { unlinkSync } = require('fs'); // ? FS Stands For File System .
 
 // ? This function is used to Create a User ✌
 let createUser = async (req, res) => {
