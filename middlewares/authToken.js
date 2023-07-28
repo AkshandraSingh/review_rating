@@ -5,7 +5,7 @@ const userAuthetication = async (req,res,next) =>{
     if (authHeader && authHeader.startsWith('Bearer')){
         let token = authHeader.split(' ')[1];
         jwt.verify(token,process.env.SECRET_KEY,(err,decoded) => {
-            if (err) {
+            if (err) { // ? if token is Incorect .
                 res.status(401).json({
                     success: false,
                     message: "User authentication failed"
@@ -13,7 +13,7 @@ const userAuthetication = async (req,res,next) =>{
             } else{
                 req.user = decoded.userData;
                 console.log(decoded.userData);
-                next();
+                next(); // ! it allows to go in next Function .
             }
         })
     } else {

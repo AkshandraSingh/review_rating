@@ -23,7 +23,9 @@ const createReview = async (req, res) => {
 let updateReview = async (req, res) => {
     try {
         // ! Takeing Id form Params (URL) and data from Body (Because Updation from id) .
-        const reviewData = await companyReviewSchema.findByIdAndUpdate(req.params.id, req.body); // ! Finding Data and Update .
+        const reviewData = await companyReviewSchema.findByIdAndUpdate(req.params.id, req.body , {
+            new: true,
+        }); // ! Finding Data and Update .
         if (reviewData) {
             res.status(200).send({
                 success: true,

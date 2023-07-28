@@ -42,7 +42,10 @@ module.exports = {
     // * Company List API 😀
     companyList: async (req, res) => {
         try {
-            const companyOfList = await companySchema.find() // ! Takeing Data from Database .
+            const companyOfList = await companySchema.find(
+                {},
+                {companyName: 1 , _id: 0}
+            ) // ! Takeing Data from Database .
             const count = await companySchema.find().count(); // ! Counting the Company (Count the Company base of DataBase) .
             res.status(200).json({
                 success: true,
