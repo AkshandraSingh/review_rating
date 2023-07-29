@@ -47,7 +47,7 @@ let userLogin = async (req, res) => {
             const hashpassword = await bcrypt.compare(req.body.userPassword, userData.userPassword) // ? It Compare The New Password and Password that Sore in DataBase! .
             if (userData && hashpassword) {
                 const token = jwt.sign({ userData }, process.env.SECRET_KEY, {
-                    expiresIn: "15m",
+                    expiresIn: "1h",
                 }) // ! It Generate a Token That Expire in 15 Minutes .
                 res.status(200).send({
                     success: true,
