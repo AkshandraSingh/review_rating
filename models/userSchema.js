@@ -37,6 +37,6 @@ let userSchema = new mongoose.Schema({
         default: true,
     },
 })
-userSchema.set('timestamps', true) // ? It Automatic Generate 2 Feld (CreatedAt and UpdatedAt)
+userSchema.set('timestamps', true) // ? It Automatic Generate 2 Feld (CreatedAt and UpdatedAt) .
 
 module.exports = mongoose.model('user', userSchema);

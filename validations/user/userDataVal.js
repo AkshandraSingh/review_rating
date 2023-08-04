@@ -27,7 +27,7 @@ module.exports = {
         }
     },
 
-    // ! login User Validation is a Middleware to Validate the User Data User Reset Password (NewPassword and Comfirm Password) .
+    // ! Reset Password Validation is a Middleware to Validate the User Data User Reset Password (NewPassword and Comfirm Password) .
     resetPasswordValidation: async (req, res, next) => {
         const value = await userValidation.passwordConfirm.validate(req.body, { abortEarly: false })
         const value2 = await userValidation.passwordConfirm.validate(req.body, { abortEarly: false })

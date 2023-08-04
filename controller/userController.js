@@ -1,8 +1,9 @@
-let userSchema = require('../models/userSchema') // ? User Schema (For some API) .
 let bcrypt = require('bcrypt') // ? For Incrypt the Password .
 const jwt = require('jsonwebtoken') // ? JWT is use to Genrate a Token .
-const { transporter } = require('../service/emailService') // ? Its is a Transpoter for Sending Email .
 const { unlinkSync } = require('fs'); // ? FS Stands For File System .
+
+let userSchema = require('../models/userSchema') // ? User Schema (For Every API) .
+const { transporter } = require('../service/emailService') // ? Its is a Transpoter for Sending Email .
 
 // ? This function is used to Create a User ✌
 let createUser = async (req, res) => {
@@ -45,7 +46,7 @@ let userLogin = async (req, res) => {
         const userData = await userSchema.findOne({ userEmail: req.body.userEmail })
         if (userData) {
             const hashpassword = await bcrypt.compare(req.body.userPassword, userData.userPassword) // ? It Compare The New Password and Password that Sore in DataBase! .
-            if (userData && hashpassword) {
+            if (hashpassword) {
                 const token = jwt.sign({ userData }, process.env.SECRET_KEY, {
                     expiresIn: "1h",
                 }) // ! It Generate a Token That Expire in 15 Minutes .
@@ -103,7 +104,7 @@ const sendUserDataPasswordEmail = async (req, res) => {
         } else {
             res.status(403).json({
                 success: false,
-                message: "Please Enter Valid Email 👀" // ! if Emial is Not Present in DataBase .
+                message: "Please Enter Valid Email 👀" // ! if Email is Not Present in DataBase .
             })
         }
     } catch (error) {
