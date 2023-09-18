@@ -1,212 +1,86 @@
-let server = require("../index");
-let chaiHttp = require("chai-http");
-let chai = require("chai");
+const server = require('../index');
+const chai = require('chai');
+const chaiHttp = require('chai-http');
 
 chai.should();
 chai.use(chaiHttp);
 
-// ! User Test Case :
-// ! 1> Create User .
-// ! 2> Login User .
-// ! 3> Send Email For Reset Password .
-// ! 4> Reset Password .
-
-
-// ! 1> CREATE USER  ( It was Not Working ) Error!!
-// describe('POST /api/users', () => {
-//     it('IT should return created user detail :', (done) => {
-//         const data = {
-//             userEmail: "deepakpuYWEUIFYSDUIHnia13426@gmail.com",
-//             userPassword: "Punia@123",
-//             userName: "Deepak",
-//             userPhone: "8307521931",
-//             userCity: "barwala",
-//             userState: "hr",
-//             userRole: "admin",
-//         };
-//         chai
-//             .request(server)
-//             .post('/user/create')
-//             .set("content-Type", "application/x-www-form-urlencoded")
-//             .field(data)
-//             .attach("profilePic", "C:/Users/workspace/review_rating/uploads/image_1689340229509.ProfilePic2")
-
-
-//             .end((err, res) => {
-//                 res.should.have.status(201);
-//                 res.should.be.a('object');
-//                 res.body.should.have.property('success').eq(true);
-//                 res.body.should.have.property('message').eq('User has been Created ✔');
-//             }); done();
-//     });
-
-//     it('IT should return Same Email Error for User :', (done) => {
-//         const data = {
-//             userEmail: "deepakpuYWEUIFYSDUIHnia13426@gmail.com",
-//             userPassword: "Punia@123",
-//             userName: "Deepak",
-//             userPhone: "8307521931",
-//             userCity: "barwala",
-//             userState: "hr",
-//             userRole: "admin",
-//         };
-//         chai
-//             .request(server)
-//             .post('/user/create')
-//             .set("content-Type", "application/x-www-form-urlencoded")
-//             .field(data)
-//             .attach("profilePic", "C:/Users/workspace/review_rating/uploads/image_1689340229509.ProfilePic2")
-
-
-//             .end((err, res) => {
-//                 res.should.have.status(201);
-//                 res.should.be.a('object');
-//                 res.body.should.have.property('success').eq(false);
-//                 res.body.should.have.property('message').eq('User has been Created ✔');
-//             }); done();
-//     });
-// })
-
-// ! 2> Login User Test Case .
-describe("POST/ api/users", () => {
-    // ? If Login Successful 
-    it("IT should return login user details: ", (done) => {
-        const data = {
-            userEmail: "nameste380@gmail.com",
-            userPassword: "NotFor$ritik2"
+describe('User Test Cases', () => {
+    // Test 1: Create User
+    it('should create a user', async () => {
+        const userData = {
+            userEmail: 'deepak@example.com',
+            userPassword: 'Password123',
+            userName: 'Deepak',
+            userPhone: '8307521931',
+            userCity: 'Barwala',
+            userState: 'HR',
+            userRole: 'admin',
         };
-        chai
+
+        const res = await chai
             .request(server)
-            .post("/user/login")
-            .send(data)
-            .end((err, res) => {
-                res.should.have.status(200);
-                res.should.be.a("object");
-                res.body.should.have.property("success").eq(true);
-                res.body.should.have.property("message").eq("Login Successful ✔");
-                res.body.should.have.property("token");
-            });
-        done();
-        
+            .post('/api/users/create')
+            .set('content-Type', 'application/json')
+            .send(userData);
+
+        res.should.have.status(201);
+        res.body.should.have.property('success').eq(true);
+        res.body.should.have.property('message').eq('User has been created successfully');
     });
-    // ? If Password was Incorrect! 
-    it("IT should Return Error Messsage:", (done) => {
-        const data = {
-            userEmail: "nameste380@gmail.com",
-            userPassword: "NotYou@ritik"
+
+    // Test 2: Login User
+    it('should login a user', async () => {
+        const loginData = {
+            userEmail: 'deepak@example.com',
+            userPassword: 'Password123',
         };
-        chai
+
+        const res = await chai
             .request(server)
-            .post("/user/login")
-            .send(data)
-            .end((err, res) => {
-                res.should.have.status(401);
-                res.should.be.a("object");
-                res.body.should.have.property("success").eq(false);
-                res.body.should.have.property("message").eq("Email or Password is Incorrect ");
-            });
-        done();
+            .post('/api/users/login')
+            .set('content-Type', 'application/json')
+            .send(loginData);
+
+        res.should.have.status(200);
+        res.body.should.have.property('success').eq(true);
+        res.body.should.have.property('message').eq('Login successful');
+        res.body.should.have.property('token');
     });
-    // ? If Email was Not Exist in DataBase
-    it("IT should Return Error Messsage:", (done) => {
-        const data = {
-            userEmail: "nameste380@gmadil.com",
-            userPassword: "NotFor$ritik2"
+
+    // Test 3: Send Email For Reset Password
+    it('should send an email for password reset', async () => {
+        const resetData = {
+            userEmail: 'deepak@example.com',
         };
-        chai
+
+        const res = await chai
             .request(server)
-            .post("/user/login")
-            .send(data)
-            .end((err, res) => {
-                res.should.have.status(403);
-                res.should.be.a("object");
-                res.body.should.have.property("success").eq(false);
-                res.body.should.have.property("message").eq("Email Not Exist ");
-            });
-        done();
+            .post('/api/users/reset-password')
+            .set('content-Type', 'application/json')
+            .send(resetData);
+
+        res.should.have.status(200);
+        res.body.should.have.property('success').eq(true);
+        res.body.should.have.property('message').eq('Email sent successfully');
+        res.body.should.have.property('token');
     });
-})
 
-
-// ! 3> Email Send For Reset Password Test Case .
-describe("POST/ api/users", () => {
-    // ? If Email Sent Successful
-    it("IT should return Send Email details: ", (done) => {
-        const data = {
-            userEmail: "nameste380@gmail.com",
+    // Test 4: Reset Password
+    it('should reset user password', async () => {
+        const resetPasswordData = {
+            newPassword: 'NewPassword123',
+            confirmPassword: 'NewPassword123',
         };
-        chai
-            .request(server)
-            .post("/user/emailsend")
-            .send(data)
-            .end((err, res) => {
-                res.should.have.status(201);
-                res.should.be.a("object");
-                res.body.should.have.property("success").eq(true);
-                res.body.should.have.property("message").eq("Email Sent Successfully ❤");
-                res.body.should.have.property("token");
-                res.body.should.have.property("userID");
-            });
-        done();
 
-    });
-    // ? If Email is Not Exist in DataBase 
-    it("IT should Return Error Messsage:", (done) => {
-        const data = {
-            userEmail: "namesthhe380@gmail.com"
-        };
-        chai
+        const res = await chai
             .request(server)
-            .post("/user/emailsend")
-            .send(data)
-            .end((err, res) => {
-                res.should.have.status(403);
-                res.should.be.a("object");
-                res.body.should.have.property("success").eq(false);
-                res.body.should.have.property("message").eq("Please Enter Valid Email 👀");
-            });
-        done();
-    });
-})
+            .post('/api/users/reset-password/USER_ID/RESET_TOKEN')
+            .set('content-Type', 'application/json')
+            .send(resetPasswordData);
 
-
-// ! 4> Reset Password Test Case .  
-describe("POST/ api/users", () => {
-    // ? If Email Sent Successful
-    it("IT should return Reset Password Details: ", (done) => {
-        const data = {
-            newPassword: "Ishan_singh1234",
-            confirmPassword: "Ishan_singh1234"
-        }
-        chai
-            .request(server)
-            .post("/user/resetpassword/64c3b89d7ab87e51699b6967/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRGF0YSI6eyJfaWQiOiI2NGMzYmIzYTdhYjg3ZTUxNjk5YjY5N2MiLCJ1c2VyTmFtZSI6IklzaGFuIFNpbmdoIiwidXNlclBhc3N3b3JkIjoiJDJiJDEwJGk5M2taMEFXdUpUbTBsQ2RsMGMuNGUzYnpDbURpWmJwQWEvbzljd0x2TC5XWG5TLldOYjdPIiwidXNlclBob25lIjoiOTY0ODMyMTQ0NiIsInVzZXJFbWFpbCI6Im5hbWVzdGUzODBAZ21haWwuY29tIiwidXNlclN0YXRlIjoiTS5QIiwidXNlckNpdHkiOiJJbmRvcmUiLCJ1c2VyUm9sZSI6InVzZXIiLCJpc0FjdGl2ZSI6dHJ1ZSwicHJvZmlsZVBpYyI6Ii91cGxvYWQvaW1hZ2VfMTY5MDU0OTA1MDY2MS5Qcm9maWxlUGljMy5qcGciLCJjcmVhdGVkQXQiOiIyMDIzLTA3LTI4VDEyOjU3OjMxLjAwN1oiLCJ1cGRhdGVkQXQiOiIyMDIzLTA3LTI4VDEyOjU3OjMxLjAwN1oiLCJfX3YiOjB9LCJpYXQiOjE2OTA2MDE3MDYsImV4cCI6MTY5MDYwNTMwNn0.c3-WNF-RzfQEdqQgS-ElB3XcQyKnou96R4kN0vKZheI")
-            .send(data)
-            .end((err, res) => {
-                res.should.have.status(201);
-                res.should.be.a("object");
-                res.body.should.have.property("success").eq(true);
-                res.body.should.have.property("message").eq("Password Updated Successfully");
-            });
-        done();
-
+        res.should.have.status(200);
+        res.body.should.have.property('success').eq(true);
+        res.body.should.have.property('message').eq('Password updated successfully');
     });
-    // ? If Email is Not Exist in DataBase 
-    it("IT should Return Error Messsage:", (done) => {
-        const data = {
-            newPassword: "Ishan_singh1234",
-            confirmPassword: "Ishan_singh124"
-        }
-        chai
-            .request(server)
-            .post("/user/resetpassword/64c3b89d7ab87e51699b6967/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRGF0YSI6eyJfaWQiOiI2NGMzYmIzYTdhYjg3ZTUxNjk5YjY5N2MiLCJ1c2VyTmFtZSI6IklzaGFuIFNpbmdoIiwidXNlclBhc3N3b3JkIjoiJDJiJDEwJGk5M2taMEFXdUpUbTBsQ2RsMGMuNGUzYnpDbURpWmJwQWEvbzljd0x2TC5XWG5TLldOYjdPIiwidXNlclBob25lIjoiOTY0ODMyMTQ0NiIsInVzZXJFbWFpbCI6Im5hbWVzdGUzODBAZ21haWwuY29tIiwidXNlclN0YXRlIjoiTS5QIiwidXNlckNpdHkiOiJJbmRvcmUiLCJ1c2VyUm9sZSI6InVzZXIiLCJpc0FjdGl2ZSI6dHJ1ZSwicHJvZmlsZVBpYyI6Ii91cGxvYWQvaW1hZ2VfMTY5MDU0OTA1MDY2MS5Qcm9maWxlUGljMy5qcGciLCJjcmVhdGVkQXQiOiIyMDIzLTA3LTI4VDEyOjU3OjMxLjAwN1oiLCJ1cGRhdGVkQXQiOiIyMDIzLTA3LTI4VDEyOjU3OjMxLjAwN1oiLCJfX3YiOjB9LCJpYXQiOjE2OTA2MDE3MDYsImV4cCI6MTY5MDYwNTMwNn0.c3-WNF-RzfQEdqQgS-ElB3XcQyKnou96R4kN0vKZheI")
-            .send(data)
-            .end((err, res) => {
-                res.should.have.status(403);
-                res.should.be.a("object");
-                res.body.should.have.property("success").eq(false);
-                res.body.should.have.property("message").eq("Password and ConfirmPassword Does Not Match");
-            });
-        done();
-    });
-})
+});

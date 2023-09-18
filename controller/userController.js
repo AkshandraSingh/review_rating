@@ -1,161 +1,154 @@
-let bcrypt = require('bcrypt') // ? For Incrypt the Password .
-const jwt = require('jsonwebtoken') // ? JWT is use to Genrate a Token .
-const { unlinkSync } = require('fs'); // ? FS Stands For File System .
+const bcrypt = require('bcrypt'); // Import bcrypt for password encryption.
+const jwt = require('jsonwebtoken'); // Import JWT for token generation.
+const { unlinkSync } = require('fs'); // Import unlinkSync from File System.
 
-let userSchema = require('../models/userSchema') // ? User Schema (For Every API) .
-const { transporter } = require('../service/emailService') // ? Its is a Transpoter for Sending Email .
+const userSchema = require('../models/userSchema'); // Import User Schema for every API.
+const { transporter } = require('../service/emailService'); // Import transporter for sending emails.
 
-// ? This function is used to Create a User ✌
-let createUser = async (req, res) => {
-    const userData = new userSchema(req.body)
-    const salt = await bcrypt.genSalt(10) // ! It is Algorithm For Genrating Incrypt the Password (How many Character) .
+// Function to create a user.
+const createUser = async (req, res) => {
+    const userData = new userSchema(req.body);
+    const salt = await bcrypt.genSalt(10); // Generate a salt for password hashing.
+
     try {
-        const userExits = await userSchema.findOne({ // ? It Chek User Exist Or Not (With User Email) .
-            userEmail: req.body.userEmail,
-        });
-        if (userExits) {
-            req.file ? unlinkSync(req.file.path) : null; // ! Deleating Unnecessary Profile Pic That Allready Store in Folder .
+        const userExists = await userSchema.findOne({ userEmail: req.body.userEmail });
+        if (userExists) {
+            req.file ? unlinkSync(req.file.path) : null; // Delete unnecessary profile picture already stored.
             return res.status(401).send({
                 success: false,
-                message: 'User Allready Exists With This Email ',
+                message: 'User already exists with this email.',
             });
-        }
-        else {
+        } else {
             const filePath = `/upload/${req.file.filename}`;
             userData.profilePic = filePath;
-            userData.userPassword = await bcrypt.hash(req.body.userPassword, salt) // ? To Convert Password into Incrupt From .
-            const user = await userData.save() // ? Saveing Data in DataBase .
+            userData.userPassword = await bcrypt.hash(req.body.userPassword, salt); // Hash the password.
+            const user = await userData.save(); // Save user data in the database.
             res.status(201).json({
                 success: true,
-                message: 'User has been Created ✔',
+                message: 'User has been created successfully.',
                 user: user,
             });
         }
-    }
-    catch (err) {
+    } catch (err) {
         res.status(500).json({
             success: false,
-            message: err.message
-        })
-    }
-}
-
-// ? This function is used to Login a User 😁
-let userLogin = async (req, res) => {
-    try {
-        const userData = await userSchema.findOne({ userEmail: req.body.userEmail })
-        if (userData) {
-            const hashpassword = await bcrypt.compare(req.body.userPassword, userData.userPassword) // ? It Compare The New Password and Password that Sore in DataBase! .
-            if (hashpassword) {
-                const token = jwt.sign({ userData }, process.env.SECRET_KEY, {
-                    expiresIn: "1h",
-                }) // ! It Generate a Token That Expire in 15 Minutes .
-                res.status(200).send({
-                    success: true,
-                    message: 'Login Successful ✔',
-                    token: token
-                })
-            }
-            else {
-                res.status(401).send({
-                    success: false,
-                    message: 'Email or Password is Incorrect '
-                })
-            }
-        }
-        else { // ? It Give This Message When Email is Not Present in DataBase .
-            res.status(403).send({
-                success: false,
-                message: 'Email Not Exist '
-            })
-        }
-    }
-    catch (err) {
-        res.send({
-            success: false,
-            message: err.message
-        })
-    }
-}
-
-// ? This function is used to send email ✌
-const sendUserDataPasswordEmail = async (req, res) => {
-    const { userEmail } = req.body
-    try {
-        const userData = await userSchema.findOne({ // ! It Check The Email is Present in DataBase or Not .
-            userEmail: req.body.userEmail
-        });
-        if (userData != null) {
-            const secret = userData._id + process.env.SECRET_KEY;
-            const token = jwt.sign({ userID: userData._id }, secret, { expiresIn: "20m" }) // ! It Create a Token for Reset password .
-            const link = `http://127.0.0.1:3000/user/reset-password/${userData._id}/${token}` // ! This Link is Given By Frontend Dev .
-            let info = await transporter.sendMail({ // ? It Send Email on User Email .
-                from: "nameste380@gmail.com",
-                to: userEmail,
-                subject: "Email for user reset Password",
-                html: `<a href=${link}>click on this for reset password`
-            });
-            return res.status(201).json({
-                success: true,
-                message: "Email Sent Successfully ❤",
-                token: token, // ! it Show Token in body .
-                userID: userData._id // ! it also Show User ID in Body.
-            })
-        } else {
-            res.status(403).json({
-                success: false,
-                message: "Please Enter Valid Email 👀" // ! if Email is Not Present in DataBase .
-            })
-        }
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: `Error occur ${error.message}`,
+            message: err.message,
         });
     }
 };
 
-// ? Reset Password API 😀
+// Function to log in a user.
+const userLogin = async (req, res) => {
+    try {
+        const userData = await userSchema.findOne({ userEmail: req.body.userEmail });
+        if (userData) {
+            const isPasswordValid = await bcrypt.compare(req.body.userPassword, userData.userPassword);
+            if (isPasswordValid) {
+                const token = jwt.sign({ userData }, process.env.SECRET_KEY, {
+                    expiresIn: "1h",
+                });
+                res.status(200).send({
+                    success: true,
+                    message: 'Login successful.',
+                    token: token,
+                });
+            } else {
+                res.status(401).send({
+                    success: false,
+                    message: 'Email or password is incorrect.',
+                });
+            }
+        } else {
+            res.status(403).send({
+                success: false,
+                message: 'Email does not exist.',
+            });
+        }
+    } catch (err) {
+        res.send({
+            success: false,
+            message: err.message,
+        });
+    }
+};
+
+// Function to send an email.
+const sendUserDataPasswordEmail = async (req, res) => {
+    const { userEmail } = req.body;
+    try {
+        const userData = await userSchema.findOne({ userEmail: req.body.userEmail });
+        if (userData != null) {
+            const secret = userData._id + process.env.SECRET_KEY;
+            const token = jwt.sign({ userID: userData._id }, secret, { expiresIn: "20m" });
+            const link = `http://127.0.0.1:3000/user/reset-password/${userData._id}/${token}`;
+            let info = await transporter.sendMail({
+                from: "nameste380@gmail.com",
+                to: userEmail,
+                subject: "Email for user password reset",
+                html: `<a href=${link}>Click on this link to reset your password</a>`
+            });
+            return res.status(201).json({
+                success: true,
+                message: "Email sent successfully.",
+                token: token,
+                userID: userData._id,
+            });
+        } else {
+            res.status(403).json({
+                success: false,
+                message: "Please enter a valid email.",
+            });
+        }
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: `Error occurred: ${error.message}`,
+        });
+    }
+};
+
+// Function for resetting the password.
 const userResetPassword = async (req, res) => {
-    const { id, token } = req.params; // ! It Takes Data From Params (Means URL) .
+    const { id, token } = req.params;
     const { newPassword, confirmPassword } = req.body;
     try {
-        const checkUser = await userSchema.findById(id); // ! Find Data by Id .
+        const checkUser = await userSchema.findById(id);
         if (checkUser != null) {
             const secretKey = checkUser._id + process.env.SECRET_KEY;
-            if (newPassword === confirmPassword) { // ! It compare is new password and Comfirm password match or not .
+            if (newPassword === confirmPassword) {
                 const salt = await bcrypt.genSalt(10);
-                const bcryptPassword = await bcrypt.hash(confirmPassword, salt); // ! It again! Incrypt Password .
+                const bcryptPassword = await bcrypt.hash(confirmPassword, salt);
                 await userSchema.findByIdAndUpdate(checkUser._id, {
-                    $set: { userPassword: bcryptPassword }, // ? It is a MongoDB Query To Update the Password .
+                    $set: { userPassword: bcryptPassword },
                 });
                 res.status(201).json({
                     success: true,
-                    message: "Password Updated Successfully",
+                    message: "Password updated successfully.",
                 });
             } else {
                 res.status(403).json({
                     success: false,
-                    message: "Password and ConfirmPassword Does Not Match",
+                    message: "Password and Confirm Password do not match.",
                 });
             }
-        } else { // ? It Give This Message When Email is Not Present in DataBase .
+        } else {
             res.status(403).json({
                 success: false,
-                message: `Please Enter Valid Email`,
+                message: `Please enter a valid email.`,
             });
         }
     } catch (error) {
         res.status(500).json({
             success: false,
-            message: `Error occur : ${error.message}`,
+            message: `Error occurred: ${error.message}`,
         });
     }
 };
-// * All functions in this module
+
+// Export all functions in this module.
 module.exports = {
     createUser,
     userLogin,
     sendUserDataPasswordEmail,
-    userResetPassword
+    userResetPassword,
 };

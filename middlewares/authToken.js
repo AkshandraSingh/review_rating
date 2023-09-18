@@ -1,30 +1,34 @@
-const jwt = require('jsonwebtoken') // ? For Creating JWT Token .
+const jwt = require('jsonwebtoken'); // Import JWT for creating JWT tokens.
 
-const userAuthetication = async (req,res,next) =>{
+const userAuthentication = async (req, res, next) => {
     const authHeader = req.headers.Authorization || req.headers.authorization;
-    if (authHeader && authHeader.startsWith('Bearer')){
+
+    if (authHeader && authHeader.startsWith('Bearer')) {
         let token = authHeader.split(' ')[1];
-        jwt.verify(token,process.env.SECRET_KEY,(err,decoded) => {
-            if (err) { // ? if token is Incorect .
+
+        jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+            if (err) {
+                // If the token is incorrect or expired.
                 res.status(401).json({
                     success: false,
                     message: "User authentication failed"
                 });
-            } else{
+            } else {
+                // If the token is valid.
                 req.user = decoded.userData;
                 console.log(decoded.userData);
-                next(); // ! it allows to go in next Function .
+                next(); // Allow the request to proceed to the next function.
             }
-        })
+        });
     } else {
+        // If no token is found in the headers.
         res.status(401).json({
             success: false,
-            message: "Token Not Found"
-        })
+            message: "Token not found"
+        });
     }
-}
-
+};
 
 module.exports = {
-    userAuthetication
-}
+    userAuthentication
+};

@@ -1,135 +1,144 @@
-const companySchema = require('../models/companySchema') // ? Company Schema .
-const { unlinkSync } = require('fs'); // ? For Deleteing Company Profile Pic . 
-const companyReviewSchema = require('../models/companyReviewSchema');  // ? Company Review Schema .
+const companySchema = require('../models/companySchema'); // Import Company Schema.
+const { unlinkSync } = require('fs'); // For Deleting Company Profile Pic.
+const companyReviewSchema = require('../models/companyReviewSchema');  // Import Company Review Schema.
 
 module.exports = {
-    // * Create Company API ✌
+    // Create Company API
     createCompany: async (req, res) => {
-        const companyData = new companySchema(req.body) // ? Taking Data from Postman body
+        const companyData = new companySchema(req.body); // Get data from the request body (e.g., from Postman).
+
         try {
-            const companyExist = await companySchema.findOne({ // ! Check the Compnay Name is allready Register or Not .
+            const companyExist = await companySchema.findOne({
                 companyName: req.body.companyName,
             });
+
             companyData.companyName = req.body.companyName.trim().split(" ").map((data) => {
                 return data.charAt(0).toUpperCase() + data.slice(1);
-            }).join(" ") // ! Converting First letter in Capital and Trim .
+            }).join(" "); // Capitalize the first letter and trim.
+
             if (companyExist) {
-                req.file ? unlinkSync(req.file.path) : null; // ! Deleating Unnecessary Profile Pic That Allready Store in Folder .
+                req.file ? unlinkSync(req.file.path) : null; // Delete unnecessary profile pic already stored.
                 res.status(401).send({
                     success: false,
-                    message: 'Company allready exists',
+                    message: 'Company already exists',
                 });
             }
             else {
-                const filePath = `/uploads/${req.file.filename}`; // ! Path of Profile Pic .
+                const filePath = `/uploads/${req.file.filename}`; // Path of Profile Pic.
                 companyData.profilePic = filePath;
-                const company = await companyData.save() // ? Saveing Data in DataBase
+                const company = await companyData.save(); // Save data in the database.
+
                 res.status(200).json({
                     success: true,
                     message: 'Company created',
-                    companyDetails: company, // ? Data of Company Details
+                    companyDetails: company, // Company details.
                 });
             }
         }
         catch (err) {
             res.status(500).json({
                 success: false,
-                message: err.message
-            })
+                message: err.message,
+            });
         }
     },
 
-    // * Company List API 😀
+    // Company List API
     companyList: async (req, res) => {
         try {
             const companyOfList = await companySchema.find(
                 {},
-                {companyName: 1 , _id: 0}
-            ) // ! Takeing Data from Database .
-            const count = await companySchema.find().count(); // ! Counting the Company (Count the Company base of DataBase) .
+                { companyName: 1, _id: 0 }
+            ); // Get data from the database.
+
+            const count = await companySchema.find().count(); // Count the companies based on the database.
+
             res.status(200).json({
                 success: true,
                 message: 'List Of Company',
-                count: count, // ? Count of Company .
-                list: companyOfList, // ? List of Company .
+                count: count, // Count of companies.
+                list: companyOfList, // List of companies.
             });
-
         }
         catch (err) {
             res.status(500).json({
                 success: false,
-                message: err.message
-            })
+                message: err.message,
+            });
         }
     },
 
-    // * Company Details API ✌
+    // Company Details API
     companyDetails: async (req, res) => {
-        const id = req.params.id // ! It means take Data from URL .
+        const id = req.params.id; // Get data from URL.
+
         try {
-            const companyData = await companySchema.findById(id) // ? Finding the Company .
-            const reviewData = await companyReviewSchema // ! Taking Data From Review Collection also .
+            const companyData = await companySchema.findById(id); // Find the company.
+            const reviewData = await companyReviewSchema
                 .find({ companyId: id })
-                .populate({ path: "userId", select: "userName profilePic" })
+                .populate({ path: "userId", select: "userName profilePic" });
+
             res.status(200).send({
                 success: true,
                 message: 'Company details',
-                company: companyData, // ? Company Deatail .
-                review: reviewData // ? Review Detail and User .
-            })
+                company: companyData, // Company details.
+                review: reviewData, // Review details and user info.
+            });
         } catch (err) {
             res.status(200).send({
                 success: false,
-                message: 'Company Details Not Found', // ? If Company Details Not Found in DataBase or there is Mistake in URL .
-                error: err.message
-            })
+                message: 'Company Details Not Found', // If company details not found in the database or there is a mistake in the URL.
+                error: err.message,
+            });
         }
     },
 
-    // * Sort Company API 😁
+    // Sort Company API
     sortCompany: async (req, res) => {
         try {
-            let sortedCompany = await companySchema.find().sort({ companyName: 1 }) // ? For Sort Company and Find From DataBase .
+            let sortedCompany = await companySchema.find().sort({ companyName: 1 }); // Sort companies and retrieve them from the database.
+
             res.status(200).send({
                 success: true,
-                message: "Company List With Sorted Format 😎",
-                data: sortedCompany // ! Sort Company Data .
-            })
+                message: "Company List With Sorted Format",
+                data: sortedCompany, // Sorted company data.
+            });
         }
         catch (err) {
             res.status(500).send({
                 success: false,
-                message: "There was an Error 😶",
-                error: err.message
-            })
+                message: "There was an Error",
+                error: err.message,
+            });
         }
     },
 
-    // * Search Company API 🤩
+    // Search Company API
     searchCompany: async (req, res) => {
-        const { letter } = req.params // ! Taking Data From URL .
+        const { letter } = req.params; // Get data from URL.
+
         try {
-            const searchData = await companySchema.find({ companyName: { $regex: `^${letter}`, $options: "i" } })
+            const searchData = await companySchema.find({ companyName: { $regex: `^${letter}`, $options: "i" } });
+
             if (searchData.length > 0) {
                 res.status(200).send({
                     success: true,
-                    message: "Company Found ✔",
-                    data: searchData // ? Founded Company Detail .
-                })
+                    message: "Company Found",
+                    data: searchData, // Found company details.
+                });
             } else {
                 res.status(403).json({
                     success: false,
-                    message: "Company Not Found 🙂" // ? If company Not Found .
-                })
+                    message: "Company Not Found", // If company not found.
+                });
             }
-
         }
         catch (err) {
             res.status(500).send({
                 success: false,
-                message: "There was an Error 👀",
-                error: err.message
-            })
+                message: "There was an Error",
+                error: err.message,
+            });
         }
     }
-}
+};

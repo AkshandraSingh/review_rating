@@ -1,15 +1,15 @@
-const joi = require('joi') // ? For Validation of Company
+const joi = require('joi'); // Import Joi for validation of company data.
 
 const companySchema = {
-    // ! Register Company Vailidation .
+    // Register Company Validation
     registerCompany: joi.object({
         companyName: joi
             .string()
             .min(2)
             .max(25)
             .message({
-                "string-min": "{#lable} should be at least {#limit} characters",
-                "string-man": "{#lable} should be at least {#limit} characters",
+                'string-min': '{#label} should be at least {#limit} characters',
+                'string-man': '{#label} should be at least {#limit} characters',
             })
             .required(),
         companyLocation: joi
@@ -17,8 +17,8 @@ const companySchema = {
             .min(2)
             .max(25)
             .message({
-                "string-min": "{#lable} should be at least {#limit} characters",
-                "string-man": "{#lable} should be at least {#limit} characters",
+                'string-min': '{#label} should be at least {#limit} characters',
+                'string-man': '{#label} should be at least {#limit} characters',
             })
             .required(),
         companyCity: joi
@@ -26,18 +26,18 @@ const companySchema = {
             .min(2)
             .max(25)
             .message({
-                "string-min": "{#lable} should be at least {#limit} characters",
-                "string-man": "{#lable} should be at least {#limit} characters",
+                'string-min': '{#label} should be at least {#limit} characters',
+                'string-man': '{#label} should be at least {#limit} characters',
             }),
         companyState: joi
             .string()
             .min(2)
             .max(25)
             .message({
-                "string-min": "{#lable} should be at least {#limit} characters",
-                "string-man": "{#lable} should be at least {#limit} characters",
+                'string-min': '{#label} should be at least {#limit} characters',
+                'string-man': '{#label} should be at least {#limit} characters',
             }),
-    })
+    }),
+};
 
-}
-module.exports = companySchema
+module.exports = companySchema;

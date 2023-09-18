@@ -1,17 +1,19 @@
-const joi = require('joi') // ! For Validation
-const { joiPasswordExtendCore } = require('joi-password'); // ! For Validation Password
+const joi = require('joi'); // Import Joi for validation
+const { joiPasswordExtendCore } = require('joi-password'); // Extend Joi for password validation
 const joiPassword = joi.extend(joiPasswordExtendCore);
 
-const userSchema = { // ! Validation Schema base on User Schema .
-    // ! Register Validation .
+const userSchema = {
+    // Validation Schema based on User Schema
+
+    // Register Validation
     registerUser: joi.object({
         userName: joi
             .string()
             .max(20)
             .min(3)
             .message({
-                "string-min": "{#lable} should be at least {#limit} characters",
-                "string-man": "{#lable} should be at least {#limit} characters",
+                'string-min': '{#label} should be at least {#limit} characters',
+                'string-man': '{#label} should be at least {#limit} characters',
             })
             .required(),
         userEmail: joi
@@ -19,8 +21,8 @@ const userSchema = { // ! Validation Schema base on User Schema .
             .email()
             .min(11)
             .message({
-                "string-min": "{#lable} should be at least {#limit} characters",
-                "string-man": "{#lable} should be at least {#limit} characters",
+                'string-min': '{#label} should be at least {#limit} characters',
+                'string-man': '{#label} should be at least {#limit} characters',
             })
             .required(),
         userPassword: joiPassword
@@ -33,8 +35,7 @@ const userSchema = { // ! Validation Schema base on User Schema .
             .onlyLatinCharacters()
             .messages({
                 'password.minOfUppercase': '{#label} should contain at least {#min} uppercase character',
-                'password.minOfSpecialCharacters':
-                    '{#label} should contain at least {#min} special character',
+                'password.minOfSpecialCharacters': '{#label} should contain at least {#min} special character',
                 'password.minOfLowercase': '{#label} should contain at least {#min} lowercase character',
                 'password.minOfNumeric': '{#label} should contain at least {#min} numeric character',
                 'password.noWhiteSpaces': '{#label} should not contain white spaces',
@@ -47,8 +48,8 @@ const userSchema = { // ! Validation Schema base on User Schema .
             .min(1000000000)
             .max(9999999999)
             .message({
-                "string-min": "{#lable} should be at least {#limit} characters",
-                "string-man": "{#lable} should be at least {#limit} characters",
+                'string-min': '{#label} should be at least {#limit} characters',
+                'string-man': '{#label} should be at least {#limit} characters',
             })
             .required(),
         userCity: joi
@@ -59,7 +60,7 @@ const userSchema = { // ! Validation Schema base on User Schema .
             .required()
     }).unknown(true),
 
-    // ! Login Validation .
+    // Login Validation
     loginUser: joi.object({
         userEmail: joi
             .string()
@@ -69,7 +70,7 @@ const userSchema = { // ! Validation Schema base on User Schema .
             .string()
     }).unknown(true),
 
-    // ! Reset Password .
+    // Reset Password
     passwordConfirm: joi.object({
         newPassword: joiPassword
             .string()
@@ -81,8 +82,7 @@ const userSchema = { // ! Validation Schema base on User Schema .
             .onlyLatinCharacters()
             .messages({
                 'password.minOfUppercase': '{#label} should contain at least {#min} uppercase character',
-                'password.minOfSpecialCharacters':
-                    '{#label} should contain at least {#min} special character',
+                'password.minOfSpecialCharacters': '{#label} should contain at least {#min} special character',
                 'password.minOfLowercase': '{#label} should contain at least {#min} lowercase character',
                 'password.minOfNumeric': '{#label} should contain at least {#min} numeric character',
                 'password.noWhiteSpaces': '{#label} should not contain white spaces',
@@ -98,14 +98,13 @@ const userSchema = { // ! Validation Schema base on User Schema .
             .onlyLatinCharacters()
             .messages({
                 'password.minOfUppercase': '{#label} should contain at least {#min} uppercase character',
-                'password.minOfSpecialCharacters':
-                    '{#label} should contain at least {#min} special character',
+                'password.minOfSpecialCharacters': '{#label} should contain at least {#min} special character',
                 'password.minOfLowercase': '{#label} should contain at least {#min} lowercase character',
                 'password.minOfNumeric': '{#label} should contain at least {#min} numeric character',
                 'password.noWhiteSpaces': '{#label} should not contain white spaces',
                 'password.onlyLatinCharacters': '{#label} should contain only latin characters',
             })
     }),
-}
+};
 
-module.exports = userSchema
+module.exports = userSchema;

@@ -1,68 +1,73 @@
-const companyReviewSchema = require('../models/companyReviewSchema') // ? Schema of Review (That use in all API) .
+const companyReviewSchema = require('../models/companyReviewSchema'); // Import the review schema (used in all APIs).
 
-// * Create Riview API 😀
+// Create Review API
 const createReview = async (req, res) => {
-    let schema = new companyReviewSchema(req.body) // ! Takeing Data From Postman Body
     try {
-        let review = await schema.save() // ? Save the Data in Database .
-        res.status(202).json({
-            sucess: true,
-            message: "Your Review is Successfully Created",
-            Data: review, // ? Show Review that Create .
-        })
-    }
-    catch (err) {
-        res.status(500).json({
-            sucess: false,
-            message: err.message,
-        })
-    }
-}
+        const schema = new companyReviewSchema(req.body); // Get data from the request body (e.g., from Postman).
+        const review = await schema.save(); // Save the data in the database.
 
-// * Update Review API 😉
-let updateReview = async (req, res) => {
+        res.status(202).json({
+            success: true,
+            message: "Your Review is Successfully Created",
+            Data: review, // Show the created review.
+        });
+    } catch (err) {
+        res.status(500).json({
+            success: false,
+            message: err.message,
+        });
+    }
+};
+
+// Update Review API
+const updateReview = async (req, res) => {
     try {
-        // ! Takeing Id form Params (URL) and data from Body (Because Updation from id) .
-        const reviewData = await companyReviewSchema.findByIdAndUpdate(req.params.id, req.body , {
-            new: true,
-        }); // ! Finding Data and Update .
+        // Get the review ID from URL params and data from the request body for updating.
+        const reviewData = await companyReviewSchema.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            {
+                new: true, // Return the updated data.
+            }
+        );
+
         if (reviewData) {
             res.status(200).send({
                 success: true,
                 message: 'Review Updated Successfully',
-                updateReview: reviewData, // ? Show Data in Body .
-            })
+                updateReview: reviewData, // Show the updated data.
+            });
         } else {
             res.status(404).send({
                 success: false,
-                message: 'Review Not Found', // ! if Review Not Found .
-            })
+                message: 'Review Not Found', // If the review is not found.
+            });
         }
     } catch (error) {
         res.status(500).send({
             success: false,
-            error: error
-        })
+            error: error,
+        });
     }
-}
+};
 
-// * Delete Review API 👍 
-let deleteReview = async (req, res) => {
+// Delete Review API
+const deleteReview = async (req, res) => {
     try {
-        let id = req.params.id // ! Taking Data from URL .
-        let deleteReview = await companyReviewSchema.findByIdAndDelete(id, req.body) // ! Find data by id and Delete the Data .
+        const id = req.params.id; // Get the review ID from URL params.
+        const deletedReview = await companyReviewSchema.findByIdAndDelete(id); // Find data by ID and delete it.
+
         res.status(202).send({
             success: true,
             message: 'Review Deleted Successfully',
-            Data: deleteReview // ? Show the Deleted Data .
-        })
-    }
-    catch (error) {
+            Data: deletedReview, // Show the deleted data.
+        });
+    } catch (error) {
         res.status(500).send({
             success: false,
-            error: error
-        })
+            error: error,
+        });
     }
-}
+};
 
-module.exports = { createReview, deleteReview, updateReview }
+module.exports = { createReview, deleteReview, updateReview };
